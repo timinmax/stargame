@@ -7,8 +7,8 @@ import com.badlogic.gdx.math.Vector2;
 import ru.geekbrains.stargame.base.BaseScreen;
 
 public class MenuScreen extends BaseScreen {
-    Texture img;
-    Texture bckGrnd;
+    private Texture img;
+    private Texture bckGrnd;
 
     private Vector2 pos,
                     touch,
