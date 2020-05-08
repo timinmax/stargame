@@ -1,6 +1,5 @@
 package ru.geekbrains.stargame.sprite;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -10,13 +9,16 @@ import ru.geekbrains.stargame.math.Rect;
 
 
 public class Hero extends Sprite {
-    Vector2 dstVector, tmpVector;
-    float velocity;
-    public Hero(Texture texture) {
-        super(new TextureRegion(texture));
-        dstVector = new Vector2();
-        tmpVector = new Vector2();
-        velocity = 0.01f;
+    Vector2 dstVector = new Vector2();
+    Vector2 tmpVector = new Vector2();
+    float velocity = 0.01f;
+
+    public Hero(TextureRegion texture) {
+        super(texture);
+    }
+
+    public Hero(TextureRegion[] texture) {
+        super(texture);
     }
 
     @Override
@@ -42,8 +44,12 @@ public class Hero extends Sprite {
             tmpVector.sub(this.pos);
             if (tmpVector.len() <= velocity){
                 this.pos.set(dstVector);
+                setFrame(0);
             }else{
-                this.pos.add(tmpVector.nor().scl(velocity));
+                tmpVector.nor().scl(velocity);
+                setAngle(tmpVector.angle() - 90);
+                this.pos.add(tmpVector);
+                setFrame(1);
             }
         }
     }

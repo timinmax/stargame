@@ -9,8 +9,8 @@ import ru.geekbrains.stargame.math.Rect;
 
 public class Background extends Sprite {
 
-    public Background(Texture texture) {
-        super(new TextureRegion(texture));
+    public Background(TextureRegion texture) {
+        super(texture);
     }
 
     @Override

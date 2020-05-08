@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
@@ -14,10 +15,12 @@ import ru.geekbrains.stargame.math.Rect;
 
 public class BaseScreen implements Screen, InputProcessor {
     protected SpriteBatch batch;
+    protected static TextureAtlas txAtlas = new TextureAtlas("game.pack");
 
     private Rect screenBounds;
     private Rect worldBounds;
     private Rect glBounds;
+
 
     private Matrix4 worldToGl;
     private Matrix3 screenToWorld;
@@ -78,6 +81,7 @@ public class BaseScreen implements Screen, InputProcessor {
     @Override
     public void dispose() {
         batch.dispose();
+        txAtlas.dispose();
     }
 
     @Override

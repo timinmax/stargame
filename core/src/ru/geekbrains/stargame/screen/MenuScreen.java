@@ -1,6 +1,7 @@
 package ru.geekbrains.stargame.screen;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import ru.geekbrains.stargame.base.BaseScreen;
@@ -9,19 +10,24 @@ import ru.geekbrains.stargame.sprite.Background;
 import ru.geekbrains.stargame.sprite.Hero;
 
 public class MenuScreen extends BaseScreen {
-    private Texture imgHero;
-    private Texture bckGrnd;
+    private TextureRegion txBckGrnd;
+    private TextureRegion[] txHero;
+
     private Background background;
     private Hero hero;
 
     @Override
     public void show() {
         super.show();
-        imgHero = new Texture("badlogic.jpg");
-        bckGrnd = new Texture("bkgrnd2.jpg");
-        background = new Background(bckGrnd);
-        hero = new Hero(imgHero);
-        hero.setScale(0.2f);
+        txHero = new TextureRegion[2];
+
+        txHero[0] = txAtlas.findRegion("starShip");
+        txHero[1] = txAtlas.findRegion("starShipIsMoving");
+        txBckGrnd = txAtlas.findRegion("bkgrnd2");
+
+        background = new Background(txBckGrnd);
+        hero = new Hero(txHero);
+        hero.setScale(0.3f);
     }
 
     @Override
@@ -49,7 +55,6 @@ public class MenuScreen extends BaseScreen {
     @Override
     public void dispose() {
         super.dispose();
-        imgHero.dispose();
-        bckGrnd.dispose();
+
     }
 }

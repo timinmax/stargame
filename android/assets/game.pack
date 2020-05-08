@@ -1,0 +1,26 @@
+
+images1.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bkgrnd2
+  rotate: false
+  xy: 2, 2
+  size: 499, 641
+  orig: 499, 641
+  offset: 0, 0
+  index: -1
+starShipIsMoving
+  rotate: false
+  xy: 2, 645
+  size: 195, 232
+  orig: 195, 232
+  offset: 0, 0
+  index: -1
+starShip
+  rotate: false
+  xy: 199, 645
+  size: 195, 232
+  orig: 195, 232
+  offset: 0, 0
+  index: -1

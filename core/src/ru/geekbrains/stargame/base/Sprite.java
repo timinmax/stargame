@@ -12,11 +12,24 @@ public class Sprite extends Rect {
     protected float angle;
     protected float scale = 1f;
     protected TextureRegion[] regions;
+
+    public int getFrame() {
+        return frame;
+    }
+
+    public void setFrame(int frame) {
+        this.frame = frame;
+    }
+
     protected int frame = 0;
 
     public Sprite(TextureRegion region) {
         regions = new TextureRegion[1];
         regions[0] = region;
+    }
+
+    public Sprite(TextureRegion[] regions) {
+        this.regions = regions;
     }
 
     public void setHeightProportion(float height) {
