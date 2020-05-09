@@ -4,14 +4,17 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
+import ru.geekbrains.stargame.StarGame;
 import ru.geekbrains.stargame.math.Rect;
 
 
 public class Sprite extends Rect {
-
+    protected static StarGame game;
+    protected int frame = 0;
     protected float angle;
     protected float scale = 1f;
     protected TextureRegion[] regions;
+
 
     public int getFrame() {
         return frame;
@@ -21,15 +24,15 @@ public class Sprite extends Rect {
         this.frame = frame;
     }
 
-    protected int frame = 0;
-
+    public Sprite(TextureRegion[] regions) {
+        this.regions = regions;
+    }
+    public Sprite(StarGame theGame) {
+        game = theGame;
+    }
     public Sprite(TextureRegion region) {
         regions = new TextureRegion[1];
         regions[0] = region;
-    }
-
-    public Sprite(TextureRegion[] regions) {
-        this.regions = regions;
     }
 
     public void setHeightProportion(float height) {

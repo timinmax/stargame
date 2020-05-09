@@ -1,10 +1,9 @@
 package ru.geekbrains.stargame.sprite;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-
 import ru.geekbrains.stargame.base.Sprite;
 import ru.geekbrains.stargame.math.Rect;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
 
 
 public class Background extends Sprite {

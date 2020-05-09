@@ -1,31 +1,31 @@
 package ru.geekbrains.stargame.screen;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
+import ru.geekbrains.stargame.StarGame;
 import ru.geekbrains.stargame.base.BaseScreen;
 import ru.geekbrains.stargame.math.Rect;
 import ru.geekbrains.stargame.sprite.Background;
 import ru.geekbrains.stargame.sprite.Hero;
 
-public class MenuScreen extends BaseScreen {
-    private TextureRegion txBckGrnd;
-    private TextureRegion[] txHero;
-
-    private Background background;
+public class GameScreen extends BaseScreen {
     private Hero hero;
+    private static final int EXIT_CODE = 131;
+
+    public GameScreen(StarGame theGame) {
+        super(theGame);
+    }
 
     @Override
     public void show() {
         super.show();
-        txHero = new TextureRegion[2];
-
-        txHero[0] = txAtlas.findRegion("starShip");
-        txHero[1] = txAtlas.findRegion("starShipIsMoving");
-        txBckGrnd = txAtlas.findRegion("bkgrnd2");
-
+        txBckGrnd = game.txAtlas.findRegion("bkgrnd2");
         background = new Background(txBckGrnd);
+
+        TextureRegion[] txHero = new TextureRegion[2];
+        txHero[0] = game.txAtlas.findRegion("starShip");
+        txHero[1] = game.txAtlas.findRegion("starShipIsMoving");
         hero = new Hero(txHero);
         hero.setScale(0.3f);
     }
@@ -39,7 +39,6 @@ public class MenuScreen extends BaseScreen {
     @Override
     public void render(float delta) {
         super.render(delta);
-
         batch.begin();
         background.draw(batch);
         hero.draw(batch);
@@ -53,8 +52,15 @@ public class MenuScreen extends BaseScreen {
     }
 
     @Override
+    public boolean keyDown(int keycode) {
+        if (keycode==EXIT_CODE){
+            game.switchScreen(0);
+        }
+        return false;
+    }
+
+    @Override
     public void dispose() {
         super.dispose();
-
     }
 }

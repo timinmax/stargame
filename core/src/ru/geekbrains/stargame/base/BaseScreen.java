@@ -5,17 +5,21 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 
+import ru.geekbrains.stargame.StarGame;
 import ru.geekbrains.stargame.math.MatrixUtils;
 import ru.geekbrains.stargame.math.Rect;
+import ru.geekbrains.stargame.sprite.Background;
 
 public class BaseScreen implements Screen, InputProcessor {
     protected SpriteBatch batch;
-    protected static TextureAtlas txAtlas = new TextureAtlas("game.pack");
+    protected static StarGame game;
+    protected TextureRegion txBckGrnd;
+    protected Background background;
 
     private Rect screenBounds;
     private Rect worldBounds;
@@ -26,6 +30,11 @@ public class BaseScreen implements Screen, InputProcessor {
     private Matrix3 screenToWorld;
 
     private Vector2 touch;
+    private Vector2 mouseMove;
+
+    public BaseScreen(StarGame theGame) {
+        game = theGame;
+    }
 
     @Override
     public void show() {
@@ -37,6 +46,7 @@ public class BaseScreen implements Screen, InputProcessor {
         worldToGl = new Matrix4();
         screenToWorld = new Matrix3();
         touch = new Vector2();
+        mouseMove = new Vector2();
     }
 
     @Override
@@ -81,7 +91,6 @@ public class BaseScreen implements Screen, InputProcessor {
     @Override
     public void dispose() {
         batch.dispose();
-        txAtlas.dispose();
     }
 
     @Override
@@ -130,6 +139,12 @@ public class BaseScreen implements Screen, InputProcessor {
     }
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
+        mouseMove.set(screenX, screenBounds.getHeight() - screenY ).mul(screenToWorld);
+        mouseMoved(mouseMove);
+        return false;
+    }
+
+    public boolean mouseMoved(Vector2 mouseMove) {
         return false;
     }
 

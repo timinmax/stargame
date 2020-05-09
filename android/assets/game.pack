@@ -3,24 +3,78 @@ images1.png
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-bkgrnd2
+kosmodrom
   rotate: false
   xy: 2, 2
-  size: 499, 641
-  orig: 499, 641
+  size: 616, 1001
+  orig: 616, 1001
   offset: 0, 0
   index: -1
 starShipIsMoving
   rotate: false
-  xy: 2, 645
+  xy: 620, 2
   size: 195, 232
   orig: 195, 232
   offset: 0, 0
   index: -1
 starShip
   rotate: false
-  xy: 199, 645
+  xy: 817, 2
   size: 195, 232
   orig: 195, 232
+  offset: 0, 0
+  index: -1
+buttonPlayMouseOver
+  rotate: false
+  xy: 620, 236
+  size: 145, 69
+  orig: 145, 69
+  offset: 0, 0
+  index: -1
+buttonPlayClick
+  rotate: false
+  xy: 767, 236
+  size: 145, 69
+  orig: 145, 69
+  offset: 0, 0
+  index: -1
+buttonExitMouseOver
+  rotate: false
+  xy: 620, 307
+  size: 139, 69
+  orig: 139, 69
+  offset: 0, 0
+  index: -1
+buttonExitClick
+  rotate: false
+  xy: 761, 307
+  size: 139, 69
+  orig: 139, 69
+  offset: 0, 0
+  index: -1
+buttonPlaySimple
+  rotate: false
+  xy: 620, 378
+  size: 143, 67
+  orig: 143, 67
+  offset: 0, 0
+  index: -1
+buttonExitSimple
+  rotate: false
+  xy: 765, 378
+  size: 137, 67
+  orig: 137, 67
+  offset: 0, 0
+  index: -1
+
+images2.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bkgrnd2
+  rotate: false
+  xy: 2, 2
+  size: 499, 641
+  orig: 499, 641
   offset: 0, 0
   index: -1

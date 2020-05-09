@@ -33,7 +33,6 @@ public class Hero extends Sprite {
         super.draw(batch);
     }
 
-
     public void setDestination(Vector2 touch){
         dstVector.set(touch);
     }
