@@ -7,16 +7,15 @@ import ru.geekbrains.stargame.math.Rect;
 
 public class Button extends Sprite  {
 
-    private final static float BUTTON_SCALE = 0.3f;
+    private final static float BUTTON_SCALE = 0.1f;
 
     public Button(StarGame theGame) {
         super(theGame);
-        setScale(BUTTON_SCALE);
     }
 
     @Override
     public void resize(Rect worldBounds) {
-        setHeightProportion(scale);
+        setHeightProportion(BUTTON_SCALE);
     }
 
     public void mouseMoved(Vector2 tmpVector){

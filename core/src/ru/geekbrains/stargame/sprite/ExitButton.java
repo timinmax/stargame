@@ -23,7 +23,7 @@ public class ExitButton extends Button {
     @Override
     public void resize(Rect worldBounds) {
         super.resize(worldBounds);
-        this.pos.set(0f,-0.4f);
+        this.pos.set(0f,-0.1f);
     }
 
     @Override
