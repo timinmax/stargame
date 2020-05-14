@@ -7,10 +7,10 @@ import ru.geekbrains.stargame.StarGame;
 import ru.geekbrains.stargame.base.BaseScreen;
 import ru.geekbrains.stargame.math.Rect;
 import ru.geekbrains.stargame.sprite.Background;
-import ru.geekbrains.stargame.sprite.Hero;
+import ru.geekbrains.stargame.sprite.StarShip;
 
 public class GameScreen extends BaseScreen {
-    private Hero hero;
+    private StarShip starShip;
     private static final int EXIT_CODE = 131;
 
     public GameScreen(StarGame theGame) {
@@ -26,28 +26,37 @@ public class GameScreen extends BaseScreen {
         TextureRegion[] txHero = new TextureRegion[2];
         txHero[0] = game.txAtlas.findRegion("starShip");
         txHero[1] = game.txAtlas.findRegion("starShipIsMoving");
-        hero = new Hero(txHero);
-        hero.setScale(0.3f);
+        starShip = new StarShip(txHero);
+        starShip.setScale(0.3f);
     }
 
     @Override
     public void resize(Rect worldBounds) {
         background.resize(worldBounds);
-        hero.resize(worldBounds);
+        starShip.resize(worldBounds);
     }
 
     @Override
     public void render(float delta) {
         super.render(delta);
+        update(delta);
+        draw();
+    }
+
+    private void update(float delta) {
+        starShip.update(delta);
+    }
+
+    private void draw(){
         batch.begin();
         background.draw(batch);
-        hero.draw(batch);
+        starShip.draw(batch);
         batch.end();
     }
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer, int button) {
-        hero.setDestination(touch);
+        starShip.setDestination(touch);
         return super.touchDown(touch, pointer, button);
     }
 

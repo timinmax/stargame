@@ -8,16 +8,16 @@ import ru.geekbrains.stargame.base.Sprite;
 import ru.geekbrains.stargame.math.Rect;
 
 
-public class Hero extends Sprite {
+public class StarShip extends Sprite {
     Vector2 dstVector = new Vector2();
     Vector2 tmpVector = new Vector2();
     float velocity = 0.01f;
 
-    public Hero(TextureRegion texture) {
+    public StarShip(TextureRegion texture) {
         super(texture);
     }
 
-    public Hero(TextureRegion[] texture) {
+    public StarShip(TextureRegion[] texture) {
         super(texture);
     }
 
@@ -29,15 +29,11 @@ public class Hero extends Sprite {
 
     @Override
     public void draw(SpriteBatch batch) {
-        move();
         super.draw(batch);
     }
 
-    public void setDestination(Vector2 touch){
-        dstVector.set(touch);
-    }
-
-    private void move(){
+    @Override
+    public void update(float delta) {
         if(!this.pos.equals(dstVector)){
             tmpVector.set(dstVector);
             tmpVector.sub(this.pos);
@@ -51,6 +47,10 @@ public class Hero extends Sprite {
                 setFrame(1);
             }
         }
+    }
+
+    public void setDestination(Vector2 touch){
+        dstVector.set(touch);
     }
 
 }
