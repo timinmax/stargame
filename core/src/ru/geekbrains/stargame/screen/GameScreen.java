@@ -1,6 +1,5 @@
 package ru.geekbrains.stargame.screen;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import ru.geekbrains.stargame.StarGame;
@@ -12,6 +11,15 @@ import ru.geekbrains.stargame.sprite.StarShip;
 public class GameScreen extends BaseScreen {
     private StarShip starShip;
     private static final int EXIT_CODE = 131;
+    private static final int LArr_CODE = 21;
+    private static final int RArr_CODE = 22;
+    private static final int UArr_CODE = 19;
+    private static final int ABut_CODE = 29;
+    private static final int WBut_CODE = 51;
+    private static final int DBut_CODE = 32;
+    private static final int SPACE_CODE = 62;
+    private boolean[] keysPressed = new boolean[4];//ArrowL,ArrowRight,ArrowUp,a,d,w,space
+
 
     public GameScreen(StarGame theGame) {
         super(theGame);
@@ -23,10 +31,7 @@ public class GameScreen extends BaseScreen {
         txBckGrnd = game.txAtlas.findRegion("bkgrnd2");
         background = new Background(txBckGrnd);
 
-        TextureRegion[] txHero = new TextureRegion[2];
-        txHero[0] = game.txAtlas.findRegion("starShip");
-        txHero[1] = game.txAtlas.findRegion("starShipIsMoving");
-        starShip = new StarShip(txHero);
+        starShip = new StarShip(game.txAtlas.findRegion("StarShipIRML"));
         starShip.setScale(0.3f);
     }
 
@@ -44,7 +49,7 @@ public class GameScreen extends BaseScreen {
     }
 
     private void update(float delta) {
-        starShip.update(delta);
+        starShip.update(delta,keysPressed,getWorldBounds());
     }
 
     private void draw(){
@@ -55,16 +60,82 @@ public class GameScreen extends BaseScreen {
     }
 
     @Override
+    public boolean touchDragged(Vector2 touch, int pointer) {
+        starShip.touchDragged(touch,pointer);
+        return super.touchDragged(touch, pointer);
+    }
+
+    @Override
     public boolean touchDown(Vector2 touch, int pointer, int button) {
+        starShip.touchDown(touch,pointer,button);
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(Vector2 touch, int pointer, int button) {
         starShip.setDestination(touch);
-        return super.touchDown(touch, pointer, button);
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        switch (keycode){
+            case LArr_CODE:
+                keysPressed[0] = false;
+                break;
+            case RArr_CODE:
+                keysPressed[1] = false;
+                break;
+            case UArr_CODE:
+                keysPressed[2] = false;
+                break;
+            case ABut_CODE:
+                keysPressed[0] = false;
+                break;
+            case WBut_CODE:
+                keysPressed[2] = false;
+                break;
+            case DBut_CODE:
+                keysPressed[1] = false;
+                break;
+            case SPACE_CODE:
+                keysPressed[3] = false;
+                break;
+            default:
+        }
+        return false;
     }
 
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode==EXIT_CODE){
-            game.switchScreen(0);
+        switch (keycode){
+            case EXIT_CODE:
+                game.switchScreen(0);
+                break;
+            case LArr_CODE:
+                keysPressed[0] = true;
+                break;
+            case RArr_CODE:
+                keysPressed[1] = true;
+                break;
+            case UArr_CODE:
+                keysPressed[2] = true;
+                break;
+            case ABut_CODE:
+                keysPressed[0] = true;
+                break;
+            case WBut_CODE:
+                keysPressed[2] = true;
+                break;
+            case DBut_CODE:
+                keysPressed[1] = true;
+                break;
+            case SPACE_CODE:
+                keysPressed[3] = true;
+                break;
+            default:
         }
+
         return false;
     }
 

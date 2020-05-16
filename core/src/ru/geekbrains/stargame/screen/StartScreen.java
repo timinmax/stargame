@@ -13,6 +13,7 @@ public class StartScreen extends BaseScreen {
     private PlayButton startBtn;
     private ExitButton exitBtn;
 
+
     public StartScreen(StarGame theGame) {
         super(theGame);
     }
@@ -52,8 +53,8 @@ public class StartScreen extends BaseScreen {
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer, int button) {
-        startBtn.touchDown(touch);
-        exitBtn.touchDown(touch);
+        startBtn.touchDown( touch,  pointer,  button);
+        exitBtn.touchDown( touch,  pointer,  button);
         return super.touchDown(touch, pointer, button);
     }
 
@@ -61,6 +62,8 @@ public class StartScreen extends BaseScreen {
     public boolean touchUp(Vector2 touch, int pointer, int button) {
         startBtn.mouseMoved(touch);
         exitBtn.mouseMoved(touch);
+        startBtn.touchUp( touch,  pointer,  button);
+        exitBtn.touchUp( touch,  pointer,  button);
         return super.touchUp(touch, pointer, button);
     }
 
