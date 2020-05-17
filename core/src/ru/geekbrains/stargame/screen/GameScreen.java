@@ -6,6 +6,7 @@ import ru.geekbrains.stargame.StarGame;
 import ru.geekbrains.stargame.base.BaseScreen;
 import ru.geekbrains.stargame.math.Rect;
 import ru.geekbrains.stargame.sprite.Background;
+import ru.geekbrains.stargame.sprite.Star;
 import ru.geekbrains.stargame.sprite.StarShip;
 
 public class GameScreen extends BaseScreen {
@@ -19,7 +20,7 @@ public class GameScreen extends BaseScreen {
     private static final int DBut_CODE = 32;
     private static final int SPACE_CODE = 62;
     private boolean[] keysPressed = new boolean[4];//ArrowL,ArrowRight,ArrowUp,a,d,w,space
-
+    private Star stars[] = new Star[150];
 
     public GameScreen(StarGame theGame) {
         super(theGame);
@@ -33,12 +34,19 @@ public class GameScreen extends BaseScreen {
 
         starShip = new StarShip(game.txAtlas.findRegion("StarShipIRML"));
         starShip.setScale(0.3f);
+
+        for (int i = 0; i < stars.length; i++) {
+            stars[i] = new Star(game.txAtlas);
+        }
     }
 
     @Override
     public void resize(Rect worldBounds) {
         background.resize(worldBounds);
         starShip.resize(worldBounds);
+        for (Star star : stars) {
+            star.resize(worldBounds);
+        }
     }
 
     @Override
@@ -50,13 +58,21 @@ public class GameScreen extends BaseScreen {
 
     private void update(float delta) {
         starShip.update(delta,keysPressed,getWorldBounds());
+        for (Star star : stars) {
+            star.update(delta);
+        }
     }
 
     private void draw(){
         batch.begin();
         background.draw(batch);
+        for (Star star : stars) {
+            star.draw(batch);
+        }
         starShip.draw(batch);
         batch.end();
+
+
     }
 
     @Override
