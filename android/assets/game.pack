@@ -10,51 +10,65 @@ kosmodrom
   orig: 616, 1001
   offset: 0, 0
   index: -1
-buttonPlayMouseOver
+enemyStarShips
   rotate: false
   xy: 620, 2
+  size: 400, 100
+  orig: 400, 100
+  offset: 0, 0
+  index: -1
+buttonPlayMouseOver
+  rotate: false
+  xy: 620, 104
   size: 145, 69
   orig: 145, 69
   offset: 0, 0
   index: -1
 buttonPlayClick
   rotate: false
-  xy: 767, 2
+  xy: 767, 104
   size: 145, 69
   orig: 145, 69
   offset: 0, 0
   index: -1
 buttonExitMouseOver
   rotate: false
-  xy: 620, 73
+  xy: 620, 175
   size: 139, 69
   orig: 139, 69
   offset: 0, 0
   index: -1
 buttonExitClick
   rotate: false
-  xy: 761, 73
+  xy: 761, 175
   size: 139, 69
   orig: 139, 69
   offset: 0, 0
   index: -1
 buttonPlaySimple
   rotate: false
-  xy: 620, 144
+  xy: 620, 246
   size: 143, 67
   orig: 143, 67
   offset: 0, 0
   index: -1
 buttonExitSimple
   rotate: false
-  xy: 765, 144
+  xy: 765, 246
   size: 137, 67
   orig: 137, 67
   offset: 0, 0
   index: -1
+playerBullet
+  rotate: false
+  xy: 914, 104
+  size: 30, 30
+  orig: 30, 30
+  offset: 0, 0
+  index: -1
 star
   rotate: false
-  xy: 914, 2
+  xy: 914, 136
   size: 20, 20
   orig: 20, 20
   offset: 0, 0

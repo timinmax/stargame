@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import ru.geekbrains.stargame.base.Sprite;
 import ru.geekbrains.stargame.math.Rect;
+import ru.geekbrains.stargame.pool.BulletPool;
 
 
 public class StarShip extends Sprite {
@@ -17,19 +18,29 @@ public class StarShip extends Sprite {
     private static final int ACCELERATE_IDX = 2;
     private static final int FIRE_IDX = 3;
 
+    private BulletPool bulletPool;
+    private TextureRegion bulletRegion;
+    private Vector2 bulletV;
+    private Rect worldBounds;
 
+    private float shootTimer;
+    private float shootInterval = 0.5f;
 
     float velocity = 0.01f;
 
-    public StarShip(TextureRegion starShipIRML) {
+    public StarShip(TextureRegion starShipIRML,TextureRegion bulletRegion, BulletPool bulletPool) {
         super(
                 starShipIRML.split(206,starShipIRML.getRegionHeight())[0]
         );
+        this.bulletPool = bulletPool;
+        this.bulletRegion = bulletRegion;
+        bulletV = new Vector2(0, 0.5f);
     }
 
     @Override
     public void resize(Rect worldBounds) {
         setHeightProportion(scale);
+        this.worldBounds = worldBounds;
         this.pos.set(worldBounds.pos);
     }
 
@@ -39,7 +50,12 @@ public class StarShip extends Sprite {
     }
 
 
-    public void update(float delta, boolean[] keyPressed, Rect worldBounds) {
+    public void update(float delta, boolean[] keyPressed) {
+        shootTimer += delta;
+        if (shootTimer >= shootInterval) {
+            shootTimer = 0;
+            shoot();
+        }
         setFrame(0);
         if(!this.pos.equals(dstVector)){
             tmpVector.set(dstVector);
@@ -62,13 +78,13 @@ public class StarShip extends Sprite {
             accelerate(worldBounds);
         }
         if (keyPressed[FIRE_IDX]){
-            System.out.println("FIRE!");
+            shoot();
         }
     }
     @Override
     public boolean touchDown(Vector2 touch, int pointer, int button) {
         if (pointer == 1){
-            System.out.println("FIRE!");//second pointer 2 shoot
+            shoot();//second pointer 2 shoot
         }
         return false;
     }
@@ -117,7 +133,15 @@ public class StarShip extends Sprite {
         setFrame(1);
     }
 
+    private void shoot() {
+        Bullet bullet = bulletPool.obtain();
+        bulletV.set(0 - (float)Math.sin(Math.toRadians(getAngle())),
+                (float)Math.cos(Math.toRadians(getAngle())));
 
+        bullet.set(this, bulletRegion, pos, bulletV, 0.01f, worldBounds, 1,getAngle());
+
+
+    }
 
     private void rotation(int mult){
         float newAngle = this.getAngle()+5*mult;

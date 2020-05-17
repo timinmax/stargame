@@ -1,5 +1,7 @@
 package ru.geekbrains.stargame.base;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 
 import ru.geekbrains.stargame.StarGame;
@@ -11,9 +13,12 @@ public class Button extends Sprite  {
     private final float PRESSED_SCALE = 0.7f;
     private boolean isPressed = false;
     private int pointer = 0;
+    private Sound mouseOverSound, clickSound;
 
     public Button(StarGame theGame) {
         super(theGame);
+        mouseOverSound = Gdx.audio.newSound(Gdx.files.internal("mouseOverSound.mp3"));
+        clickSound = Gdx.audio.newSound(Gdx.files.internal("clickSound.mp3"));
     }
 
     @Override
@@ -23,6 +28,7 @@ public class Button extends Sprite  {
 
     public void mouseMoved(Vector2 tmpVector){
         if (isMe(tmpVector)) {
+            mouseOverSound.play();
             setFrame(1);
         }else {
             setFrame(0);
@@ -46,6 +52,7 @@ public class Button extends Sprite  {
             return false;
         }
         if (isMe(touch)) {
+            clickSound.play();
             setFrame(2);
             clickAction();
         }
