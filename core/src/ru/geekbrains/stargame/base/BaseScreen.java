@@ -3,6 +3,8 @@ package ru.geekbrains.stargame.base;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -31,9 +33,11 @@ public class BaseScreen implements Screen, InputProcessor {
 
     private Vector2 touch;
     private Vector2 mouseMove;
+    private Music bgMusic;
 
-    public BaseScreen(StarGame theGame) {
+    public BaseScreen(StarGame theGame, FileHandle bgMusic) {
         game = theGame;
+        this.bgMusic = Gdx.audio.newMusic(bgMusic);
     }
 
     @Override
@@ -47,6 +51,10 @@ public class BaseScreen implements Screen, InputProcessor {
         screenToWorld = new Matrix3();
         touch = new Vector2();
         mouseMove = new Vector2();
+
+        bgMusic.setLooping(true);
+        bgMusic.setVolume(0.2f);
+        bgMusic.play();
     }
 
     @Override
@@ -75,22 +83,24 @@ public class BaseScreen implements Screen, InputProcessor {
 
     @Override
     public void pause() {
-
+        bgMusic.stop();
     }
 
     @Override
     public void resume() {
-
+        bgMusic.play();
     }
 
     @Override
     public void hide() {
+        bgMusic.stop();
         dispose();
     }
 
     @Override
     public void dispose() {
         batch.dispose();
+        bgMusic.dispose();
     }
 
     @Override
