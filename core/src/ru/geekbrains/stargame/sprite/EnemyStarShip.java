@@ -30,9 +30,9 @@ public class EnemyStarShip extends Sprite {
         this.worldBounds = worldBounds;
         setScale(0.3f);
         setHeightProportion(0.3f);
-        setFrame((int)Math.random()*5);
-        setFrame(2);
+
+        setFrame(Rnd.nextInt(0,3));
         this.pos.set( Rnd.nextFloat(worldBounds.getLeft(),worldBounds.getRight()), worldBounds.getTop());
-        this.v.set(0,-0.3f);
+        this.v.set(0,-0.2f);
     }
 }

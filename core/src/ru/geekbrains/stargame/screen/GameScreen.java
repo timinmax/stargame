@@ -121,64 +121,44 @@ public class GameScreen extends BaseScreen {
 
     @Override
     public boolean keyUp(int keycode) {
-        switch (keycode){
-            case LArr_CODE:
-                keysPressed[0] = false;
-                break;
-            case RArr_CODE:
-                keysPressed[1] = false;
-                break;
-            case UArr_CODE:
-                keysPressed[2] = false;
-                break;
-            case ABut_CODE:
-                keysPressed[0] = false;
-                break;
-            case WBut_CODE:
-                keysPressed[2] = false;
-                break;
-            case DBut_CODE:
-                keysPressed[1] = false;
-                break;
-            case SPACE_CODE:
-                keysPressed[3] = false;
-                break;
-            default:
-        }
+        updateKeysPressed(keycode, false);
         return false;
     }
 
     @Override
     public boolean keyDown(int keycode) {
+        updateKeysPressed(keycode, true);
+        return false;
+    }
+
+    private void updateKeysPressed(int keycode, boolean state){
         switch (keycode){
             case EXIT_CODE:
                 game.switchScreen(0);
                 break;
             case LArr_CODE:
-                keysPressed[0] = true;
+                keysPressed[0] = state;
                 break;
             case RArr_CODE:
-                keysPressed[1] = true;
+                keysPressed[1] = state;
                 break;
             case UArr_CODE:
-                keysPressed[2] = true;
+                keysPressed[2] = state;
                 break;
             case ABut_CODE:
-                keysPressed[0] = true;
+                keysPressed[0] = state;
                 break;
             case WBut_CODE:
-                keysPressed[2] = true;
+                keysPressed[2] = state;
                 break;
             case DBut_CODE:
-                keysPressed[1] = true;
+                keysPressed[1] = state;
                 break;
             case SPACE_CODE:
-                keysPressed[3] = true;
+                keysPressed[3] = state;
                 break;
             default:
         }
-
-        return false;
     }
 
     @Override

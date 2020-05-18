@@ -14,6 +14,7 @@ public class Button extends Sprite  {
     private boolean isPressed = false;
     private int pointer = 0;
     private Sound mouseOverSound, clickSound;
+    boolean mouseOver = false;
 
     public Button(StarGame theGame) {
         super(theGame);
@@ -28,9 +29,13 @@ public class Button extends Sprite  {
 
     public void mouseMoved(Vector2 tmpVector){
         if (isMe(tmpVector)) {
-            mouseOverSound.play();
+            if (!mouseOver) {
+                mouseOverSound.play();
+            }
+            mouseOver = true;
             setFrame(1);
         }else {
+            mouseOver = false;
             setFrame(0);
         }
     }
