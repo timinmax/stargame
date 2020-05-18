@@ -1,7 +1,7 @@
 
 images1.png
 format: RGBA8888
-filter: Linear,Linear
+filter: Nearest,Nearest
 repeat: none
 kosmodrom
   rotate: false
@@ -69,11 +69,18 @@ buttonExitSimple
 
 images2.png
 format: RGBA8888
-filter: Linear,Linear
+filter: Nearest,Nearest
 repeat: none
-bkgrnd2
+StarShipIRML
   rotate: false
   xy: 2, 2
+  size: 824, 232
+  orig: 824, 232
+  offset: 0, 0
+  index: -1
+bkgrnd2
+  rotate: false
+  xy: 2, 236
   size: 499, 641
   orig: 499, 641
   offset: 0, 0
