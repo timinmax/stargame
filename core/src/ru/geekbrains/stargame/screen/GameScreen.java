@@ -1,7 +1,11 @@
 package ru.geekbrains.stargame.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
+
+import java.util.List;
 
 import ru.geekbrains.stargame.StarGame;
 import ru.geekbrains.stargame.base.BaseScreen;
@@ -9,10 +13,13 @@ import ru.geekbrains.stargame.math.Rect;
 import ru.geekbrains.stargame.math.Rnd;
 import ru.geekbrains.stargame.pool.BulletPool;
 import ru.geekbrains.stargame.pool.EnemyPool;
+import ru.geekbrains.stargame.pool.ExplosionPool;
 import ru.geekbrains.stargame.sprite.Background;
+import ru.geekbrains.stargame.sprite.Bullet;
 import ru.geekbrains.stargame.sprite.EnemyStarShip;
 import ru.geekbrains.stargame.sprite.Star;
 import ru.geekbrains.stargame.sprite.StarShip;
+import ru.geekbrains.stargame.utils.EnemyEmitter;
 
 public class GameScreen extends BaseScreen {
     private StarShip starShip;
@@ -27,29 +34,31 @@ public class GameScreen extends BaseScreen {
     private boolean[] keysPressed = new boolean[4];//ArrowL,ArrowRight,ArrowUp,a,d,w,space
     private Star stars[] = new Star[150];
     private BulletPool bulletPool;
+    private ExplosionPool explosionPool;
     private EnemyPool enemyPool;
+    private EnemyEmitter enemyEmitter;
 
+    private TextureAtlas myAtlas = new TextureAtlas("game.pack");
 
-    private float enemyTimer;
-    private float enemyInterval;
-
-    public GameScreen(StarGame theGame) {
+        public GameScreen(StarGame theGame) {
         super(theGame, Gdx.files.internal("gameSound.mp3"));
     }
 
     @Override
     public void show() {
         super.show();
-        txBckGrnd = game.txAtlas.findRegion("bkgrnd2");
-        background = new Background(txBckGrnd);
+        atlas = new TextureAtlas("mainAtlas.pack");
+        background = new Background(new Texture("bg.png"));
         bulletPool = new BulletPool();
-        enemyPool = new EnemyPool(game.txAtlas.findRegion("enemyStarShips"));
-        starShip = new StarShip(game.txAtlas.findRegion("StarShipIRML"),
-                game.txAtlas.findRegion("playerBullet"),bulletPool);
+        explosionPool = new ExplosionPool(atlas);
+        enemyPool = new EnemyPool(bulletPool, explosionPool, worldBounds);
+        enemyEmitter = new EnemyEmitter(atlas, enemyPool);
+        starShip = new StarShip(myAtlas.findRegion("StarShipIRML"),
+                myAtlas.findRegion("playerBullet"),bulletPool);
         starShip.setScale(0.3f);
 
         for (int i = 0; i < stars.length; i++) {
-            stars[i] = new Star(game.txAtlas);
+            stars[i] = new Star(myAtlas);
         }
     }
 
@@ -57,6 +66,7 @@ public class GameScreen extends BaseScreen {
     public void resize(Rect worldBounds) {
         background.resize(worldBounds);
         starShip.resize(worldBounds);
+        enemyEmitter.resize(worldBounds);
         for (Star star : stars) {
             star.resize(worldBounds);
         }
@@ -65,26 +75,37 @@ public class GameScreen extends BaseScreen {
     @Override
     public void render(float delta) {
         super.render(delta);
-        enemyInterval = Rnd.nextFloat(0.5f, 1.5f);
         update(delta);
+        checkBulletHit();
         free();
         draw();
     }
 
+    private void checkBulletHit() {
+        List<EnemyStarShip> enemyList = enemyPool.getActiveObjects();
+        List<Bullet> bulletList = bulletPool.getActiveObjects();
+        for (EnemyStarShip enemy : enemyList) {
+            for (Bullet bullet : bulletList) {
+                if (bullet.getOwner() != starShip ||  bullet.isDestroyed()) {
+                    continue;
+                }
+                if (enemy.isMe(bullet.pos)) {
+                    enemy.destroy();
+                    bullet.destroy();
+                }
+            }
+        }
+    }
+
     private void update(float delta) {
-        bulletPool.updateActiveSprites(delta);
-        enemyPool.updateActiveSprites(delta);
-        starShip.update(delta,keysPressed);
         for (Star star : stars) {
             star.update(delta);
         }
-
-        enemyTimer += delta;
-        if (enemyTimer >= enemyInterval) {
-            EnemyStarShip enemyStarShip = enemyPool.obtain();
-            enemyStarShip.set(getWorldBounds());
-            enemyTimer = 0f;
-        }
+        bulletPool.updateActiveSprites(delta);
+        enemyPool.updateActiveSprites(delta);
+        explosionPool.updateActiveSprites(delta);
+        starShip.update(delta,keysPressed);
+        enemyEmitter.generate(delta);
     }
 
     private void draw(){
@@ -93,12 +114,11 @@ public class GameScreen extends BaseScreen {
         for (Star star : stars) {
             star.draw(batch);
         }
+        starShip.draw(batch);
         bulletPool.drawActiveSprites(batch);
         enemyPool.drawActiveSprites(batch);
-        starShip.draw(batch);
+        explosionPool.drawActiveSprites(batch);
         batch.end();
-
-
     }
 
     @Override
@@ -165,11 +185,13 @@ public class GameScreen extends BaseScreen {
     public void dispose() {
         bulletPool.dispose();
         enemyPool.dispose();
+        explosionPool.dispose();
         super.dispose();
     }
 
     private void free() {
         bulletPool.freeAllDestroyed();
         enemyPool.freeAllDestroyed();
+        explosionPool.freeAllDestroyed();
     }
 }

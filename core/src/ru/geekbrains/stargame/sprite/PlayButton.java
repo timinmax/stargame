@@ -1,6 +1,7 @@
 package ru.geekbrains.stargame.sprite;
 
 
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 
@@ -13,12 +14,12 @@ import ru.geekbrains.stargame.math.Rect;
 public class PlayButton extends Button {
 
 
-    public PlayButton(StarGame theGame) {
-        super(theGame);
+    public PlayButton(StarGame theGame, TextureAtlas atlas) {
+        super(theGame,atlas);
         regions = new TextureRegion[3];
-        regions[0] = game.txAtlas.findRegion("buttonPlaySimple");
-        regions[1] = game.txAtlas.findRegion("buttonPlayMouseOver");
-        regions[2] = game.txAtlas.findRegion("buttonPlayClick");
+        regions[0] = atlas.findRegion("buttonPlaySimple");
+        regions[1] = atlas.findRegion("buttonPlayMouseOver");
+        regions[2] = atlas.findRegion("buttonPlayClick");
     }
 
     @Override

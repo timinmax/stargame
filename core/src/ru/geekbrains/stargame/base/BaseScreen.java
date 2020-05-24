@@ -7,6 +7,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Matrix4;
@@ -24,7 +25,7 @@ public class BaseScreen implements Screen, InputProcessor {
     protected Background background;
 
     private Rect screenBounds;
-    private Rect worldBounds;
+    protected Rect worldBounds;
     private Rect glBounds;
 
 
@@ -34,6 +35,7 @@ public class BaseScreen implements Screen, InputProcessor {
     private Vector2 touch;
     private Vector2 mouseMove;
     private Music bgMusic;
+    protected TextureAtlas atlas;
 
     public BaseScreen(StarGame theGame, FileHandle bgMusic) {
         game = theGame;
@@ -101,6 +103,7 @@ public class BaseScreen implements Screen, InputProcessor {
     public void dispose() {
         batch.dispose();
         bgMusic.dispose();
+        atlas.dispose();
     }
 
     @Override

@@ -2,6 +2,7 @@ package ru.geekbrains.stargame.base;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 
 import ru.geekbrains.stargame.StarGame;
@@ -13,11 +14,13 @@ public class Button extends Sprite  {
     private final float PRESSED_SCALE = 0.7f;
     private boolean isPressed = false;
     private int pointer = 0;
+    protected TextureAtlas atlas;
     private Sound mouseOverSound, clickSound;
     boolean mouseOver = false;
 
-    public Button(StarGame theGame) {
+    public Button(StarGame theGame, TextureAtlas atlas) {
         super(theGame);
+        this.atlas = atlas;
         mouseOverSound = Gdx.audio.newSound(Gdx.files.internal("mouseOverSound.mp3"));
         clickSound = Gdx.audio.newSound(Gdx.files.internal("clickSound.mp3"));
     }
