@@ -4,12 +4,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
+import ru.geekbrains.stargame.base.Ship;
 import ru.geekbrains.stargame.base.Sprite;
 import ru.geekbrains.stargame.math.Rect;
 import ru.geekbrains.stargame.pool.BulletPool;
 
 
-public class StarShip extends Sprite {
+public class StarShip extends Ship {
     Vector2 dstVector = new Vector2();
     Vector2 tmpVector = new Vector2();
 
@@ -17,15 +18,6 @@ public class StarShip extends Sprite {
     private static final int ROTATE_RIGHT_IDX = 1;
     private static final int ACCELERATE_IDX = 2;
     private static final int FIRE_IDX = 3;
-
-    private BulletPool bulletPool;
-    private TextureRegion bulletRegion;
-    private Vector2 bulletV;
-    private Rect worldBounds;
-
-    private float shootTimer;
-    private float shootInterval = 0.5f;
-
     float velocity = 0.01f;
 
     public StarShip(TextureRegion starShipIRML,TextureRegion bulletRegion, BulletPool bulletPool) {
@@ -51,11 +43,8 @@ public class StarShip extends Sprite {
 
 
     public void update(float delta, boolean[] keyPressed) {
-        shootTimer += delta;
-        if (shootTimer >= shootInterval) {
-            shootTimer = 0;
-            shoot();
-        }
+        super.update(delta);
+        autoShoot(delta);
         setFrame(0);
         if(!this.pos.equals(dstVector)){
             tmpVector.set(dstVector);
@@ -133,7 +122,7 @@ public class StarShip extends Sprite {
         setFrame(1);
     }
 
-    private void shoot() {
+    protected void shoot() {
         Bullet bullet = bulletPool.obtain();
         bulletV.set(0 - (float)Math.sin(Math.toRadians(getAngle())),
                 (float)Math.cos(Math.toRadians(getAngle())));

@@ -2,6 +2,7 @@ package ru.geekbrains.stargame.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 
 import ru.geekbrains.stargame.StarGame;
@@ -23,10 +24,11 @@ public class StartScreen extends BaseScreen {
     @Override
     public void show() {
         super.show();
-        txBckGrnd = game.txAtlas.findRegion("kosmodrom");
+        atlas =  new TextureAtlas("game.pack");
+        txBckGrnd = atlas.findRegion("kosmodrom");
         background = new Background(txBckGrnd);
-        startBtn = new PlayButton(game);
-        exitBtn = new ExitButton(game);
+        startBtn = new PlayButton(game,atlas);
+        exitBtn = new ExitButton(game,atlas);
     }
 
     @Override

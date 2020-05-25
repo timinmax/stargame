@@ -17,58 +17,86 @@ enemyStarShips
   orig: 400, 100
   offset: 0, 0
   index: -1
-buttonPlayMouseOver
+enemy3
   rotate: false
   xy: 620, 104
+  size: 180, 100
+  orig: 180, 100
+  offset: 0, 0
+  index: -1
+enemy2
+  rotate: false
+  xy: 802, 104
+  size: 180, 100
+  orig: 180, 100
+  offset: 0, 0
+  index: -1
+enemy1
+  rotate: false
+  xy: 620, 206
+  size: 180, 100
+  orig: 180, 100
+  offset: 0, 0
+  index: -1
+enemy0
+  rotate: false
+  xy: 802, 206
+  size: 180, 100
+  orig: 180, 100
+  offset: 0, 0
+  index: -1
+buttonPlayMouseOver
+  rotate: false
+  xy: 620, 308
   size: 145, 69
   orig: 145, 69
   offset: 0, 0
   index: -1
 buttonPlayClick
   rotate: false
-  xy: 767, 104
+  xy: 767, 308
   size: 145, 69
   orig: 145, 69
   offset: 0, 0
   index: -1
 buttonExitMouseOver
   rotate: false
-  xy: 620, 175
+  xy: 620, 379
   size: 139, 69
   orig: 139, 69
   offset: 0, 0
   index: -1
 buttonExitClick
   rotate: false
-  xy: 761, 175
+  xy: 761, 379
   size: 139, 69
   orig: 139, 69
   offset: 0, 0
   index: -1
 buttonPlaySimple
   rotate: false
-  xy: 620, 246
+  xy: 620, 450
   size: 143, 67
   orig: 143, 67
   offset: 0, 0
   index: -1
 buttonExitSimple
   rotate: false
-  xy: 765, 246
+  xy: 765, 450
   size: 137, 67
   orig: 137, 67
   offset: 0, 0
   index: -1
 playerBullet
   rotate: false
-  xy: 914, 104
+  xy: 984, 104
   size: 30, 30
   orig: 30, 30
   offset: 0, 0
   index: -1
 star
   rotate: false
-  xy: 914, 136
+  xy: 984, 136
   size: 20, 20
   orig: 20, 20
   offset: 0, 0

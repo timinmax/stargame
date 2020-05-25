@@ -1,6 +1,7 @@
 package ru.geekbrains.stargame.sprite;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
@@ -12,12 +13,12 @@ import ru.geekbrains.stargame.math.Rect;
 public class ExitButton extends Button {
 
 
-    public ExitButton(StarGame theGame) {
-        super(theGame);
+    public ExitButton(StarGame theGame, TextureAtlas atlas) {
+        super(theGame, atlas);
         regions = new TextureRegion[3];
-        regions[0] = game.txAtlas.findRegion("buttonExitSimple");
-        regions[1] = game.txAtlas.findRegion("buttonExitMouseOver");
-        regions[2] = game.txAtlas.findRegion("buttonExitClick");
+        regions[0] = atlas.findRegion("buttonExitSimple");
+        regions[1] = atlas.findRegion("buttonExitMouseOver");
+        regions[2] = atlas.findRegion("buttonExitClick");
     }
 
     @Override

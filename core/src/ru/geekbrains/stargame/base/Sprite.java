@@ -1,11 +1,13 @@
 package ru.geekbrains.stargame.base;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import ru.geekbrains.stargame.StarGame;
 import ru.geekbrains.stargame.math.Rect;
+import ru.geekbrains.stargame.utils.Regions;
 
 
 public class Sprite extends Rect {
@@ -18,6 +20,7 @@ public class Sprite extends Rect {
 
     public Sprite() {
     }
+
 
     public int getFrame() {
         return frame;
@@ -37,7 +40,9 @@ public class Sprite extends Rect {
         regions = new TextureRegion[1];
         regions[0] = region;
     }
-
+    public Sprite(TextureRegion region, int rows, int cols, int frames) {
+        regions = Regions.split(region, rows, cols, frames);
+    }
     public void setHeightProportion(float height) {
         setHeight(height);
         float aspect = regions[frame].getRegionWidth() / (float) regions[frame].getRegionHeight();
@@ -49,6 +54,10 @@ public class Sprite extends Rect {
     }
 
     public void draw(SpriteBatch batch) {
+        try
+        {     }catch (Exception e){
+            System.out.println("NPE");
+        }
         batch.draw(
                 regions[frame],
                 getLeft(), getBottom(),
@@ -57,6 +66,7 @@ public class Sprite extends Rect {
                 scale, scale,
                 angle
         );
+
     }
 
     public void resize(Rect worldBounds) {
