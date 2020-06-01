@@ -10,13 +10,15 @@ import java.util.List;
 import ru.geekbrains.stargame.StarGame;
 import ru.geekbrains.stargame.base.BaseScreen;
 import ru.geekbrains.stargame.math.Rect;
-import ru.geekbrains.stargame.math.Rnd;
 import ru.geekbrains.stargame.pool.BulletPool;
 import ru.geekbrains.stargame.pool.EnemyPool;
 import ru.geekbrains.stargame.pool.ExplosionPool;
 import ru.geekbrains.stargame.sprite.Background;
 import ru.geekbrains.stargame.sprite.Bullet;
 import ru.geekbrains.stargame.sprite.EnemyStarShip;
+import ru.geekbrains.stargame.sprite.GameOver;
+import ru.geekbrains.stargame.sprite.PlayButton;
+import ru.geekbrains.stargame.sprite.RestartButton;
 import ru.geekbrains.stargame.sprite.Star;
 import ru.geekbrains.stargame.sprite.StarShip;
 import ru.geekbrains.stargame.utils.EnemyEmitter;
@@ -37,6 +39,10 @@ public class GameScreen extends BaseScreen {
     private ExplosionPool explosionPool;
     private EnemyPool enemyPool;
     private EnemyEmitter enemyEmitter;
+    private enum State {PLAYING, GAME_OVER}
+    private State state;
+    private GameOver gameOver;
+    private RestartButton restartButton;
 
     private TextureAtlas myAtlas = new TextureAtlas("game.pack");
 
@@ -53,13 +59,16 @@ public class GameScreen extends BaseScreen {
         explosionPool = new ExplosionPool(atlas);
         enemyPool = new EnemyPool(bulletPool, explosionPool, worldBounds);
         enemyEmitter = new EnemyEmitter(atlas, enemyPool);
+        gameOver = new GameOver(atlas);
+        restartButton = new RestartButton(game,myAtlas);
+
         starShip = new StarShip(myAtlas.findRegion("StarShipIRML"),
-                myAtlas.findRegion("playerBullet"),bulletPool);
-        starShip.setScale(0.3f);
+                myAtlas.findRegion("playerBullet"),bulletPool,explosionPool);
 
         for (int i = 0; i < stars.length; i++) {
             stars[i] = new Star(myAtlas);
         }
+        state = State.PLAYING;
     }
 
     @Override
@@ -67,6 +76,8 @@ public class GameScreen extends BaseScreen {
         background.resize(worldBounds);
         starShip.resize(worldBounds);
         enemyEmitter.resize(worldBounds);
+        gameOver.resize(worldBounds);
+        restartButton.resize(worldBounds);
         for (Star star : stars) {
             star.resize(worldBounds);
         }
@@ -84,28 +95,51 @@ public class GameScreen extends BaseScreen {
     private void checkBulletHit() {
         List<EnemyStarShip> enemyList = enemyPool.getActiveObjects();
         List<Bullet> bulletList = bulletPool.getActiveObjects();
-        for (EnemyStarShip enemy : enemyList) {
-            for (Bullet bullet : bulletList) {
-                if (bullet.getOwner() != starShip ||  bullet.isDestroyed()) {
-                    continue;
+
+        for (Bullet bullet : bulletList) {
+            if (bullet.isDestroyed()) {
+                continue;
+            }
+
+            if (bullet.getOwner() == starShip) {
+                for (EnemyStarShip enemy : enemyList) {
+                    if (enemy.isMe(bullet.pos)) {
+                        enemy.damage(bullet.getDamage());
+                        bullet.destroy();
+                    }
                 }
-                if (enemy.isMe(bullet.pos)) {
-                    enemy.destroy();
-                    bullet.destroy();
-                }
+            } else if (starShip.isMe(bullet.pos)) {
+                starShip.damage(bullet.getDamage());
+                bullet.destroy();
             }
         }
+        if (starShip.isDestroyed()) {
+            state = State.GAME_OVER;
+        }
+    }
+
+    public void startNewGame() {
+
+        starShip.startNewGame();
+        bulletPool.freeAllActiveObjects();
+        explosionPool.freeAllActiveObjects();
+        enemyPool.freeAllActiveObjects();
+        state = State.PLAYING;
     }
 
     private void update(float delta) {
         for (Star star : stars) {
             star.update(delta);
         }
-        bulletPool.updateActiveSprites(delta);
-        enemyPool.updateActiveSprites(delta);
         explosionPool.updateActiveSprites(delta);
-        starShip.update(delta,keysPressed);
-        enemyEmitter.generate(delta);
+        if (state == State.PLAYING) {
+            starShip.update(delta, keysPressed);
+            bulletPool.updateActiveSprites(delta);
+            enemyPool.updateActiveSprites(delta);
+            enemyEmitter.generate(delta);
+        }else if (state == State.GAME_OVER) {
+            restartButton.update(delta);
+        }
     }
 
     private void draw(){
@@ -114,40 +148,67 @@ public class GameScreen extends BaseScreen {
         for (Star star : stars) {
             star.draw(batch);
         }
-        starShip.draw(batch);
-        bulletPool.drawActiveSprites(batch);
-        enemyPool.drawActiveSprites(batch);
+        if (state == State.PLAYING) {
+            starShip.draw(batch);
+            bulletPool.drawActiveSprites(batch);
+            enemyPool.drawActiveSprites(batch);
+        }else if (state == State.GAME_OVER) {
+            gameOver.draw(batch);
+            restartButton.draw(batch);
+        }
         explosionPool.drawActiveSprites(batch);
         batch.end();
     }
 
     @Override
     public boolean touchDragged(Vector2 touch, int pointer) {
-        starShip.touchDragged(touch,pointer);
+        if (state == State.PLAYING) {
+            starShip.touchDragged(touch, pointer);
+        }
         return super.touchDragged(touch, pointer);
     }
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer, int button) {
-        starShip.touchDown(touch,pointer,button);
+        if (state == State.PLAYING) {
+            starShip.touchDown(touch, pointer, button);
+        }else if (state == State.GAME_OVER){
+            restartButton.touchDown(touch,pointer,button);
+        }
         return false;
     }
 
     @Override
     public boolean touchUp(Vector2 touch, int pointer, int button) {
-        starShip.setDestination(touch);
+        if (state == State.PLAYING) {
+            starShip.setDestination(touch);
+        }else if(state == State.GAME_OVER){
+            restartButton.touchUp(touch,pointer,button);
+        }
         return false;
     }
 
     @Override
+    public boolean mouseMoved(Vector2 mouseMove) {
+            if(state==State.GAME_OVER){
+            restartButton.mouseMoved(mouseMove);
+            }
+        return super.mouseMoved(mouseMove);
+    }
+
+    @Override
     public boolean keyUp(int keycode) {
-        updateKeysPressed(keycode, false);
+        if (state == State.PLAYING) {
+            updateKeysPressed(keycode, false);
+        }
         return false;
     }
 
     @Override
     public boolean keyDown(int keycode) {
-        updateKeysPressed(keycode, true);
+        if (state == State.PLAYING) {
+            updateKeysPressed(keycode, true);
+        }
         return false;
     }
 

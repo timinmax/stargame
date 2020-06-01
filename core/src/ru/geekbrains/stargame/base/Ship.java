@@ -11,6 +11,7 @@ import ru.geekbrains.stargame.sprite.Bullet;
 import ru.geekbrains.stargame.sprite.Explosion;
 
 public class Ship extends Sprite {
+    private static final float DAMAGE_ANIMATE_INTERVAL = 0.1f;
     protected Rect worldBounds;
     protected float reloadTimer;
     protected float reloadInterval = 0.5f;
@@ -24,6 +25,8 @@ public class Ship extends Sprite {
     protected float bulletHeight;
     protected int damage;
     protected int hp;
+
+    private float damageAnimateTimer;
 
     protected Sound sound;
 
@@ -56,6 +59,10 @@ public class Ship extends Sprite {
     public void update(float delta) {
         super.update(delta);
         pos.mulAdd(v, delta);
+        damageAnimateTimer += delta;
+        if (damageAnimateTimer >= DAMAGE_ANIMATE_INTERVAL) {
+            frame = 0;
+        }
     }
 
     @Override
@@ -83,4 +90,14 @@ public class Ship extends Sprite {
         explosion.set(getHeight(), pos);
     }
 
+
+    public void damage(int damage) {
+        damageAnimateTimer = 0f;
+        frame = 1;
+        hp -= damage;
+        if (hp <= 0) {
+            hp = 0;
+            destroy();
+        }
+    }
 }
