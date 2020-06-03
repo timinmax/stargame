@@ -25,4 +25,8 @@ public class StarGame extends Game {
 	public void switchScreen(int idScreen){
 		setScreen(gameScreens[idScreen]);
 	}
+
+	public Screen getScreen(int idScreen){
+		return gameScreens[idScreen];
+	}
 }

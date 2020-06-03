@@ -5,33 +5,34 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import ru.geekbrains.stargame.base.Ship;
-import ru.geekbrains.stargame.base.Sprite;
 import ru.geekbrains.stargame.math.Rect;
 import ru.geekbrains.stargame.pool.BulletPool;
+import ru.geekbrains.stargame.pool.ExplosionPool;
 
 
 public class StarShip extends Ship {
     Vector2 dstVector = new Vector2();
     Vector2 tmpVector = new Vector2();
-
+    private static final int HP = 100;
     private static final int ROTATE_LEFT_IDX = 0;
     private static final int ROTATE_RIGHT_IDX = 1;
     private static final int ACCELERATE_IDX = 2;
     private static final int FIRE_IDX = 3;
     float velocity = 0.01f;
 
-    public StarShip(TextureRegion starShipIRML,TextureRegion bulletRegion, BulletPool bulletPool) {
+    public StarShip(TextureRegion starShipIRML, TextureRegion bulletRegion, BulletPool bulletPool, ExplosionPool explosionPool) {
         super(
                 starShipIRML.split(206,starShipIRML.getRegionHeight())[0]
         );
         this.bulletPool = bulletPool;
         this.bulletRegion = bulletRegion;
+        this.explosionPool = explosionPool;
         bulletV = new Vector2(0, 0.5f);
     }
 
     @Override
     public void resize(Rect worldBounds) {
-        setHeightProportion(scale);
+        setHeightProportion(0.1f);
         this.worldBounds = worldBounds;
         this.pos.set(worldBounds.pos);
     }
@@ -141,5 +142,13 @@ public class StarShip extends Ship {
         }
         setAngle(newAngle);
 
+    }
+
+    public void startNewGame() {
+        hp = HP;
+
+        this.pos.y = 0;
+        this.pos.x = 0;
+        flushDestroy();
     }
 }
